@@ -1,5 +1,5 @@
 'use client';
-
+//shop
 import { db } from "../firebase/config";
 import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
@@ -7,28 +7,65 @@ import Image from 'next/image';
 
 export default function Page() {
   const [products, setProducts] = useState<any[] | null>(null);
-  // const [webdeco, setWebde] = useState<any[] | null>(null);
+  const [webdeco, setWebdeco] = useState<any[] | null>(null);
   useEffect(() => {
     const fetchProducts = async () => {
       const querySnapshot = await getDocs(collection(db, "products"));
       const productList = querySnapshot.docs.map(doc => doc.data());
       setProducts(productList);
     };
-
     fetchProducts();
+
+    const fetchWebdeco = async () => {
+      const querySnapshot = await getDocs(collection(db, "webdeco"));
+      const webdecoitem = querySnapshot.docs.map(doc => doc.data());
+      setWebdeco(webdecoitem);
+    };
+    fetchWebdeco();
   }, []);
+
+
+
+  
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
+
+
+
+
+    {/* {webdeco?.map((webdeco, index) => (   
+        <Image 
+        src={webdeco["Image Banner"]} 
+        alt= "banner" 
+        fill 
+        className="object-fit "/> //object-cover
+))} */}
+
+
+
+
+
+
+
+
+
+
+
+
+      
       {/* BANNER */}
       <div className="w-full h-60 md:h-65 relative">
+           {webdeco?.map((webdeco, index) => ( 
+
         <Image
-          src="/banner.jpg" // Replace with your actual banner image
-          alt="Shop Banner"
+          src={webdeco["Image Banner"]}  // Replace with your actual banner image
+          alt="Banner"
           fill
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+      ))}
+        <div className="absolute inset-0  bg-opacity-40 flex items-center justify-center">
           <h1 className="text-white text-3xl md:text-5xl font-bold uppercase tracking-wide">
             K-Apparel Collection
           </h1>
@@ -74,7 +111,7 @@ export default function Page() {
 
             </div>
           ))}
-        </div>
+        </div>//
       </div>
     </div>
   );
